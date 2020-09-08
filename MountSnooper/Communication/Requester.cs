@@ -18,8 +18,6 @@ namespace MountSnooper.Communication
     {
         private readonly IAuthenticator _auth;
         private readonly string accessToken;
-        private readonly string profileApiNamespace = "profile-eu";
-        private readonly string gameDataApiNamespace = "static-eu";
         private readonly string locale = "en_GB";
 
         public Requester(IAuthenticator auth)
@@ -31,7 +29,7 @@ namespace MountSnooper.Communication
         public IEnumerable<MountDTO> PlayerMounts(string name, string region, string realm)
         {
             RestClient client = new RestClient(
-                $"https://{region.ToLower()}.api.blizzard.com/profile/wow/character/{realm.ToLower()}/{name.ToLower()}/collections/mounts?namespace={profileApiNamespace}&locale={locale}");
+                $"https://{region.ToLower()}.api.blizzard.com/profile/wow/character/{realm.ToLower()}/{name.ToLower()}/collections/mounts?namespace=profile-{region.ToLower()}&locale={locale}");
 
             RestRequest request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
@@ -53,7 +51,7 @@ namespace MountSnooper.Communication
         public IEnumerable<Mount> AllMounts(string region)
         {
             RestClient client = new RestClient(
-                $"https://{region.ToLower()}.api.blizzard.com/data/wow/mount/index?namespace={gameDataApiNamespace}&locale={locale}");
+                $"https://{region.ToLower()}.api.blizzard.com/data/wow/mount/index?namespace=static-{region.ToLower()}&locale={locale}");
 
             RestRequest request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
@@ -76,7 +74,7 @@ namespace MountSnooper.Communication
         private int CreatureDisplayId(int mountId, string region)
         {
             RestClient client = new RestClient(
-               $"https://{region}.api.blizzard.com/data/wow/mount/{mountId}?namespace={gameDataApiNamespace}&locale={locale}");
+               $"https://{region}.api.blizzard.com/data/wow/mount/{mountId}?namespace=static-{region.ToLower()}&locale={locale}");
 
             RestRequest request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
@@ -93,7 +91,7 @@ namespace MountSnooper.Communication
         private string CreatureDisplayMediaURL(int displayId, string region)
         {
             RestClient client = new RestClient(
-               $"https://{region}.api.blizzard.com/data/wow/media/creature-display/{displayId}?namespace={gameDataApiNamespace}&locale={locale}");
+               $"https://{region}.api.blizzard.com/data/wow/media/creature-display/{displayId}?namespace=static-{region.ToLower()}&locale={locale}");
 
             RestRequest request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
