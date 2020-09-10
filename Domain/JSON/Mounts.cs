@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Domain.Entities
+namespace Domain.JSON
 {
     public class Mounts
     {

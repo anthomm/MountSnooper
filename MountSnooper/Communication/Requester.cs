@@ -1,7 +1,7 @@
 ﻿using Domain.DTOs;
 using Domain.Entities;
 using Domain.JSON;
-using MountSnooper.Authorization;
+using MountSnooper.Authentication;
 using RestSharp;
 using System;
 using System.Collections.Generic;
