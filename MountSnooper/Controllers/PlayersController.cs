@@ -35,13 +35,12 @@ namespace MountSnooper.Controllers
         {
             //TODO: Validate params
             //TODO: Try clause requests
-            PlayerDTO boomer = new PlayerDTO()
+            PlayerDTO playerDTO = new PlayerDTO()
             {
                 Name = name,
                 Mounts = _request.PlayerMounts(name, region, realm) //TODO: Async/await
             };
-            
-            return Ok(boomer);
+            return Ok(playerDTO);
         }
     }
 }

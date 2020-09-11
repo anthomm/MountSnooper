@@ -1,11 +1,12 @@
 ﻿using Domain.Entities;
+using Domain.JSON;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using System.Text.Json;
 
-namespace MountSnooper.Authorization
+namespace MountSnooper.Authentication
 {
-    public interface IAuthenticator 
+    public interface IAuthenticator
     {
         AccessToken Token { get; }
     }
@@ -17,7 +18,7 @@ namespace MountSnooper.Authorization
         {
             _clientSettings = settings.Value;
             Token = RequestAccessToken(
-                _clientSettings.ClientId, 
+                _clientSettings.ClientId,
                 _clientSettings.ClientSecret
                 );
         }

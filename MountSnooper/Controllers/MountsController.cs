@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using MountSnooper.Communication;
-using Domain.Entities;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace MountSnooper.Controllers
@@ -28,7 +26,7 @@ namespace MountSnooper.Controllers
         /// <remarks>
         /// This endpoint is cached, but only after being primed.
         /// <br></br>
-        /// Priming the cache usually takes about 5 minutes and it persists for about a day after each access or priming.
+        /// Priming the cache usually takes about 3 seconds and it persists for about a day after each access or priming.
         /// </remarks>
         [HttpGet]
         public ActionResult<IEnumerable<MountDTO>> Get()
@@ -38,8 +36,7 @@ namespace MountSnooper.Controllers
             if (!_cache.TryGetValue(cacheKey, out List<MountDTO> cacheEntry))
             {
                 // Key not in cache, so get data.
-                cacheEntry = FullMountSet();
-                //cacheEntry = PartialMountSet(); // For debugging
+                cacheEntry = (List<MountDTO>) _request.AllMountsAndURLs();
 
                 // Set cache options.
                 var cacheEntryOptions =
@@ -52,36 +49,5 @@ namespace MountSnooper.Controllers
             }
             return Ok(cacheEntry);
         }
-
-        private List<MountDTO> FullMountSet()
-        {
-            IEnumerable<Mount> rawMounts = _request.AllMounts();
-            List<MountDTO> mounts = new List<MountDTO>();
-            foreach (Mount mount in rawMounts)
-            {
-                mounts.Add(new MountDTO()
-                {
-                    Name = mount.Name,
-                    ImageURL = _request.ImageURL(mount.Id) //TODO: Async/await
-                });
-            }
-            return mounts;
-        }
-
-        //private List<MountDTO> PartialMountSet(int sizeOfSet = 20)
-        //{
-        //    IEnumerable<Mount> rawMounts = _request.AllMounts();
-        //    List<MountDTO> mounts = new List<MountDTO>();
-        //    Mount[] alphaArray = rawMounts.ToArray();
-        //    for (int i = 0; i < sizeOfSet; i++)
-        //    {
-        //        mounts.Add(new MountDTO()
-        //        {
-        //            Name = alphaArray[i].Name,
-        //            ImageURL = _request.ImageURL(alphaArray[i].Id)
-        //        });
-        //    }
-        //    return mounts;
-        //}
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MountSnooper.Authorization;
+using MountSnooper.Authentication;
 using MountSnooper.Communication;
 using System;
 using System.IO;
