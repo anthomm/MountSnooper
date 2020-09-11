@@ -13,17 +13,29 @@ namespace MountSnooper.Authentication
     public class Authenticator : IAuthenticator
     {
         private readonly ClientSettings _clientSettings;
-        public AccessToken Token { get; private set; } // TODO: Check on get if expired, refresh if so.
+        private AccessToken _token;
+        public AccessToken Token
+        {
+            get
+            {
+                if (_token.HoursSinceCreated() >= 20) // Blizzard Access Tokens last 24 hours
+                    _token = RequestAccessToken(_clientSettings);
+
+                return _token;
+            }
+
+            private set { _token = value; }
+        }
         public Authenticator(IOptions<ClientSettings> settings)
         {
             _clientSettings = settings.Value;
-            Token = RequestAccessToken(
-                _clientSettings.ClientId,
-                _clientSettings.ClientSecret
-                );
+            Token = RequestAccessToken(_clientSettings);
         }
-        private AccessToken RequestAccessToken(string clientId, string clientSecret)
+        private AccessToken RequestAccessToken(ClientSettings settings)
         {
+            string clientId = settings.ClientId;
+            string clientSecret = settings.ClientSecret;
+
             var client = new RestClient("https://eu.battle.net/oauth/token");
             var request = new RestRequest(Method.POST);
             request.AddHeader("cache-control", "no-cache");

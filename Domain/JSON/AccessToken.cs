@@ -1,9 +1,15 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Domain.JSON
 {
     public class AccessToken
     {
+        AccessToken()
+        {
+            CreatedAt = DateTime.Now;
+        }
+
         [JsonPropertyName("access_token")]
         public string Value { get; set; }
         
@@ -11,6 +17,14 @@ namespace Domain.JSON
         public string Type { get; set; }
         
         [JsonPropertyName("expires_in")]
-        public int Expires { get; set; } // TODO: Calculate when expiry is due.
+        public int Expires { get; set; } 
+        
+        private DateTime CreatedAt { get; set; }
+
+        public int HoursSinceCreated()
+        {
+            TimeSpan difference = (DateTime.Now - CreatedAt);
+            return (int) difference.TotalHours;
+        }
     }
 }

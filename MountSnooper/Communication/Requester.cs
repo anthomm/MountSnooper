@@ -1,5 +1,4 @@
 ﻿using Domain.DTOs;
-using Domain.Entities;
 using Domain.JSON;
 using MountSnooper.Authentication;
 using RestSharp;
@@ -17,13 +16,11 @@ namespace MountSnooper.Communication
     public class Requester : IRequester
     {
         private readonly IAuthenticator _auth;
-        private readonly string accessToken;
         private readonly string locale = "en_GB";
 
         public Requester(IAuthenticator auth)
         {
             _auth = auth;
-            accessToken = _auth.Token.Value;
         }
 
         public IEnumerable<MountDTO> PlayerMounts(string name, string region, string realm)
@@ -34,7 +31,7 @@ namespace MountSnooper.Communication
             RestRequest request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddHeader("authorization", $"Bearer {accessToken}");
+            request.AddHeader("authorization", $"Bearer {_auth.Token.Value}");
 
             IRestResponse response = client.Execute(request);
 
@@ -56,7 +53,7 @@ namespace MountSnooper.Communication
             RestRequest request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
-            request.AddHeader("authorization", $"Bearer {accessToken}");
+            request.AddHeader("authorization", $"Bearer {_auth.Token.Value}");
 
             List<MountDTO> dtos = new List<MountDTO>();
 
