@@ -39,13 +39,13 @@ namespace MountSnooper.Communication
             List<MountDTO> mountDTOs = new List<MountDTO>();
             foreach (PlayerMount mount in player.Mounts)
             {
-                mountDTOs.Add(new MountDTO() { Name = mount.MountInfo.Name});
+                mountDTOs.Add(new MountDTO() { Name = mount.MountInfo.Name });
             }
 
             return mountDTOs;
         }
 
-        public IEnumerable<MountDTO> AllMountsAndURLs(string region = "eu")
+        public IEnumerable<MountDTO> AllMountsAndURLs(string region)
         {
             RestClient client = new RestClient(
                $"https://{region}.api.blizzard.com/data/wow/search/mount?namespace=static-{region}&locale=en_GB&orderby=id&_page=1");

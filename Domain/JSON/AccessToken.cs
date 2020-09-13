@@ -5,11 +5,6 @@ namespace Domain.JSON
 {
     public class AccessToken
     {
-        AccessToken()
-        {
-            CreatedAt = DateTime.Now;
-        }
-
         [JsonPropertyName("access_token")]
         public string Value { get; set; }
         
@@ -18,13 +13,5 @@ namespace Domain.JSON
         
         [JsonPropertyName("expires_in")]
         public int Expires { get; set; } 
-        
-        private DateTime CreatedAt { get; set; }
-
-        public int HoursSinceCreated()
-        {
-            TimeSpan difference = (DateTime.Now - CreatedAt);
-            return (int) difference.TotalHours;
-        }
     }
 }
