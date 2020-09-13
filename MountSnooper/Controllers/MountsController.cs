@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Domain.DTOs;
+﻿using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using MountSnooper.Communication;
 using Microsoft.Extensions.Caching.Memory;
+using MountSnooper.Communication;
+using System;
+using System.Collections.Generic;
 
 namespace MountSnooper.Controllers
 {
@@ -36,7 +36,7 @@ namespace MountSnooper.Controllers
             if (!_cache.TryGetValue(cacheKey, out List<MountDTO> cacheEntry))
             {
                 // Key not in cache, so get data.
-                cacheEntry = (List<MountDTO>) _request.AllMountsAndURLs();
+                cacheEntry = (List<MountDTO>)_request.AllMountsAndURLs();
 
                 // Set cache options.
                 var cacheEntryOptions =

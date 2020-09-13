@@ -5,12 +5,13 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace MountSnooper.Communication
 {
     public interface IRequester
     {
-        IEnumerable<MountDTO> PlayerMounts(string name, string region, string realm);
+        Task<IEnumerable<MountDTO>> PlayerMounts(string name, string region, string realm);
         IEnumerable<MountDTO> AllMountsAndURLs(string region = "eu");
     }
     public class Requester : IRequester
@@ -23,7 +24,7 @@ namespace MountSnooper.Communication
             _auth = auth;
         }
 
-        public IEnumerable<MountDTO> PlayerMounts(string name, string region, string realm)
+        public async Task<IEnumerable<MountDTO>> PlayerMounts(string name, string region, string realm)
         {
             RestClient client = new RestClient(
                 $"https://{region.ToLower()}.api.blizzard.com/profile/wow/character/{realm.ToLower()}/{name.ToLower()}/collections/mounts?namespace=profile-{region.ToLower()}&locale={locale}");
@@ -33,7 +34,7 @@ namespace MountSnooper.Communication
             request.AddHeader("content-type", "application/x-www-form-urlencoded");
             request.AddHeader("authorization", $"Bearer {_auth.Token.Value}");
 
-            IRestResponse response = client.Execute(request);
+            IRestResponse response = await client.ExecuteAsync(request);
 
             Player player = JsonSerializer.Deserialize<Player>(response.Content);
             List<MountDTO> mountDTOs = new List<MountDTO>();

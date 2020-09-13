@@ -31,17 +31,17 @@ namespace MountSnooper
             services.AddSingleton<IAuthenticator, Authenticator>();
             services.AddSingleton<IRequester, Requester>();
             services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
-            services.AddSwaggerGen(c => 
+            services.AddSwaggerGen(c =>
             {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-            services.AddHangfire((serviceProvider, config) => 
+            services.AddHangfire((serviceProvider, config) =>
             {
                 config.UseMemoryStorage();
                 config.UseActivator(new ServiceProviderActivator(serviceProvider));
-            }); 
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,7 +69,7 @@ namespace MountSnooper
             {
                 endpoints.MapControllers();
             });
-                
+
             app.UseHangfireServer();
         }
     }

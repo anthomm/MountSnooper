@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MountSnooper.Communication;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace MountSnooper.Controllers
 {
@@ -31,14 +32,14 @@ namespace MountSnooper.Controllers
         /// <param name="region"></param>
         /// <param name="realm"></param>
         [HttpGet("{name}")]
-        public ActionResult<PlayerDTO> Get([Required] string name, [Required] string region, [Required] string realm)
+        public async Task<ActionResult<PlayerDTO>> Get([Required] string name, [Required] string region, [Required] string realm)
         {
             //TODO: Validate params
             //TODO: Try clause requests
             PlayerDTO playerDTO = new PlayerDTO()
             {
                 Name = name,
-                Mounts = _request.PlayerMounts(name, region, realm) //TODO: Async/await
+                Mounts = await _request.PlayerMounts(name, region, realm) //TODO: Async/await
             };
             return Ok(playerDTO);
         }
