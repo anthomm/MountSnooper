@@ -1,6 +1,7 @@
 ﻿using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using MountSnooper.Communication;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -34,13 +35,16 @@ namespace MountSnooper.Controllers
         [HttpGet("{name}")]
         public async Task<ActionResult<PlayerDTO>> Get([Required] string name, [Required] string region, [Required] string realm)
         {
-            //TODO: Validate params
-            //TODO: Try clause requests
+            var (playerExists, mountDTOs) = await _request.PlayerMounts(name, region, realm);
+            if (!playerExists)
+                return BadRequest($"Unable to find character:{name} at realm:{realm} in region:{region}.");
+
             PlayerDTO playerDTO = new PlayerDTO()
             {
                 Name = name,
-                Mounts = await _request.PlayerMounts(name, region, realm) //TODO: Async/await
+                Mounts = mountDTOs
             };
+
             return Ok(playerDTO);
         }
     }

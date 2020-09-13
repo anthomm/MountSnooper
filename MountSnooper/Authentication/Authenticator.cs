@@ -40,6 +40,10 @@ namespace MountSnooper.Authentication
             return atoken;
         }
 
+        /// <summary>
+        /// <br>Please DO NOT invoke this manually.</br>
+        /// <br>This method has to be public in order to be run as a BackgroundJob by Hangfire.</br>
+        /// </summary>
         public void RefreshToken()
         {
             Token = RequestAccessToken(_clientSettings);

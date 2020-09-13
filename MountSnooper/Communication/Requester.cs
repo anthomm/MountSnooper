@@ -11,7 +11,23 @@ namespace MountSnooper.Communication
 {
     public interface IRequester
     {
-        Task<IEnumerable<MountDTO>> PlayerMounts(string name, string region, string realm);
+        /// <summary>
+        /// <br>Checks if the character exists and if so retrieves the set of mounts belonging to that specific character.</br> 
+        /// </summary>
+        /// <param name="name">The character's name.</param>
+        /// <param name="region">The region of the realm/server.</param>
+        /// <param name="realm">The name of the realm/server.</param>
+        /// <returns>
+        /// <br>If the character was found, then playerExists will be true and all found mounts will be listed in mountDTOs.</br> 
+        /// <br>If the character was NOT found, then playerExists will be false and mountDTOs will be null.</br> 
+        /// </returns>
+        Task<(bool playerExists, IEnumerable<MountDTO> mountDTOs)> PlayerMounts(string name, string region, string realm);
+        
+        /// <summary>
+        /// Retrieves all mounts currently in the game along with a picture URL of each mount.
+        /// </summary>
+        /// <param name="region">In which region the pictures are hosted.</param>
+        /// <returns>Set of MountDTOs</returns>
         IEnumerable<MountDTO> AllMountsAndURLs(string region = "eu");
     }
     public class Requester : IRequester
@@ -24,7 +40,8 @@ namespace MountSnooper.Communication
             _auth = auth;
         }
 
-        public async Task<IEnumerable<MountDTO>> PlayerMounts(string name, string region, string realm)
+        
+        public async Task<(bool playerExists, IEnumerable<MountDTO> mountDTOs)> PlayerMounts(string name, string region, string realm)
         {
             RestClient client = new RestClient(
                 $"https://{region.ToLower()}.api.blizzard.com/profile/wow/character/{realm.ToLower()}/{name.ToLower()}/collections/mounts?namespace=profile-{region.ToLower()}&locale={locale}");
@@ -36,6 +53,9 @@ namespace MountSnooper.Communication
 
             IRestResponse response = await client.ExecuteAsync(request);
 
+            if ((int)response.StatusCode != 200)
+                return (false, null);
+
             Player player = JsonSerializer.Deserialize<Player>(response.Content);
             List<MountDTO> mountDTOs = new List<MountDTO>();
             foreach (PlayerMount mount in player.Mounts)
@@ -43,7 +63,7 @@ namespace MountSnooper.Communication
                 mountDTOs.Add(new MountDTO() { Name = mount.MountInfo.Name });
             }
 
-            return mountDTOs;
+            return (true, mountDTOs);
         }
 
         public IEnumerable<MountDTO> AllMountsAndURLs(string region)
