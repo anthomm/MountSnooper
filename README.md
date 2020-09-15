@@ -3,14 +3,8 @@
 
 ## CREDENTIALS
 
-Store ClientID & ClientSecret [like this](https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-3.1&tabs=windows#how-the-secret-manager-tool-works).
+Pass ClientID & ClientSecret using environment variables:
+In Visual Code: launchSettings.json or Project Properties > Debug.
+Docker (Linux): docker run -e "clientID=" -e "clientSecret=" ... 
 
-Using this format:
-```json
-{
-  "ClientSettings": {
-    "ClientId": "",
-    "ClientSecret": ""
-  }
-}
-```
+
