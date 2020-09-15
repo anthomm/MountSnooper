@@ -10,4 +10,4 @@ Visual Code: launchSettings.json or Project Properties > Debug.
 Docker (Linux): docker run -e "clientID=" -e "clientSecret=" ... 
 
 #### DockerHub
-https://hub.docker.com/repository/docker/ducktuba/mountsnooper/
+https://hub.docker.com/r/ducktuba/mountsnooper
