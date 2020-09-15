@@ -30,7 +30,7 @@ namespace MountSnooper
             services.AddMemoryCache();
             services.AddSingleton<IAuthenticator, Authenticator>();
             services.AddSingleton<IRequester, Requester>();
-            services.Configure<ClientSettings>(Configuration.GetSection("ClientSettings"));
+            services.AddSingleton<IClientSettings, ClientSettings>();
             services.AddSwaggerGen(c =>
             {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
