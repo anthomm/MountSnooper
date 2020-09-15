@@ -22,7 +22,7 @@ namespace MountSnooper.Communication
         /// <br>If the character was NOT found, then playerExists will be false and mountDTOs will be null.</br> 
         /// </returns>
         Task<(bool playerExists, IEnumerable<MountDTO> mountDTOs)> PlayerMounts(string name, string region, string realm);
-        
+
         /// <summary>
         /// Retrieves all mounts currently in the game along with a picture URL of each mount.
         /// </summary>
@@ -40,7 +40,7 @@ namespace MountSnooper.Communication
             _auth = auth;
         }
 
-        
+
         public async Task<(bool playerExists, IEnumerable<MountDTO> mountDTOs)> PlayerMounts(string name, string region, string realm)
         {
             RestClient client = new RestClient(

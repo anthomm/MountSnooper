@@ -7,10 +7,10 @@ namespace Domain.JSON
     {
         [JsonPropertyName("page")]
         public int CurrentPage { get; set; }
-        
+
         [JsonPropertyName("pageCount")]
         public int PageCount { get; set; }
-        
+
         [JsonPropertyName("results")]
         public List<MountResult> Results { get; set; }
     }
@@ -25,7 +25,7 @@ namespace Domain.JSON
     {
         [JsonPropertyName("creature_displays")]
         public List<MountCreatureDisplay> CreatureDisplay { get; set; }
-        
+
         [JsonPropertyName("name")]
         public MountNames Names { get; set; }
 

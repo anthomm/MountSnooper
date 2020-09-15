@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Domain.JSON
 {
@@ -7,11 +6,11 @@ namespace Domain.JSON
     {
         [JsonPropertyName("access_token")]
         public string Value { get; set; }
-        
+
         [JsonPropertyName("token_type")]
         public string Type { get; set; }
-        
+
         [JsonPropertyName("expires_in")]
-        public int Expires { get; set; } 
+        public int Expires { get; set; }
     }
 }

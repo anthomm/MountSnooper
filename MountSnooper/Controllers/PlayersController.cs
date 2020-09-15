@@ -1,7 +1,6 @@
 ﻿using Domain.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using MountSnooper.Communication;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
